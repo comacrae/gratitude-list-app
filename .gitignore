@@ -27,3 +27,6 @@ logs
 
 #Notes
 notes.md
+
+#Test dependencies
+test_deps.json

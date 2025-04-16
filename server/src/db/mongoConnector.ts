@@ -24,5 +24,6 @@ export async function getMongoClient(MONGO_URI: string | undefined) {
     throw new MongoInitConnectionError("Dotenv value empty");
   } else {
     await mongoose.connect(MONGO_URI);
+    return true;
   }
 }
