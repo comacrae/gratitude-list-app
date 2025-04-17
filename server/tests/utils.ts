@@ -12,9 +12,9 @@ const teardownMongoClient = () => {
   mongoose.connection.close();
 };
 
-const connectMongoose = () => {
+const connectMongoose = async () => {
   const uri: string = getTestDeps(`tests/tests_deps.json`).MONGO_URI;
-  getMongoClient(uri);
+  await getMongoClient(uri);
 };
 
 export { getTestDeps, teardownMongoClient, connectMongoose };
