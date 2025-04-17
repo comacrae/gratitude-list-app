@@ -13,6 +13,9 @@ test("User Model init success", () => {
   const user = new User({ username: "test", email: "test" });
   expect(user.username).toBe("test");
   expect(user.email).toBe("test");
+  expect(user.followers).toBe([]);
+  expect(user.following).toBe([]);
+  expect(user.joined).toBeTruthy();
 });
 
 test("User Model invalid init", () => {
