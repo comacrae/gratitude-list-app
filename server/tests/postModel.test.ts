@@ -14,7 +14,6 @@ afterAll(() => {
 
 test("Post Model init success", async () => {
   const testUser = new User({
-    _id: new mongoose.Types.ObjectId(),
     username: "test",
     email: "test@email.com",
   });
@@ -25,35 +24,66 @@ test("Post Model init success", async () => {
     isPublic: true,
   });
   await testPost.save();
-  Post.findOne({ isPublic: true })
+  await Post.findOne({ author: testUser._id })
     .populate<{ author: IUser }>("author")
     .orFail()
     .then((post) => {
-      expect(post?.author.username).toBe("test");
+      const username: string = post.author.username;
+      expect(username).toBe("test");
     });
 
-  await testPost.deleteOne().exec();
+  await User.deleteMany({ username: "test" }).exec();
+  await Post.deleteMany();
+  expect(await User.findOne({ username: "test" }).exec()).toBeNull();
+  expect(await Post.findOne().exec()).toBeNull();
 });
 
-/*test("Post Item Model init successs", async () => {
+test("Post Item Model init successs", async () => {
   const testUser = new User({
-    _id: new mongoose.Types.ObjectId(),
+    //_id: new mongoose.Types.ObjectId(),
     username: "test",
     email: "test@email.com",
   });
   await testUser.save();
-  await testUser.deleteOne();
-  /*testUser.postIds.push(testPost._id);
+
+  const testPost = new Post({
+    author: testUser._id,
+    postItems: [],
+    isPublic: true,
+  });
+
+  testUser.posts.push(testPost._id);
+
+  await testUser.save();
+
   const testPostItem = new PostItem({
-    authorId: testUser._id,
-    postId: testPost._id,
+    author: testUser._id,
+    post: testPost._id,
     text: "This is a test",
   });
   await testPostItem.save();
-  testPost.postItemIds.push(testPostItem._id);
-  
 
-  //await testPostItem.deleteOne().exec();
-  const queriedPost = Post.findById(testUser.postIds[0]).exec();
-  expect(queriedPost).toBeNull;
-});*/
+  testPost.postItems.push(testPostItem._id);
+
+  await testPost.save();
+
+  const post = await Post.findById(testUser.posts[0])
+    .populate<{ postItems: IPostItem[] }>("postItems")
+    .orFail()
+    .exec();
+
+  expect(post.postItems.length).toBe(1);
+
+  await PostItem.deleteMany({ author: testUser._id }).exec();
+
+  await Post.findById(testUser.posts[0])
+    .populate<{ postItems: IPostItem[] }>("postItems")
+    .orFail()
+    .exec()
+    .then((post) => {
+      expect(post.postItems.length).toBe(0);
+    });
+
+  await Post.deleteMany({ author: testUser._id }).exec();
+  await User.deleteMany({ _id: testUser._id }).exec();
+});
