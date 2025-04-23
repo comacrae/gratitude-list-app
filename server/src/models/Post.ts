@@ -14,12 +14,11 @@ interface IPost {
 const postSchema = new Schema(
   {
     author: { type: Schema.Types.ObjectId, ref: "User", required: true },
-    postItems: [
-      {
-        type: Schema.Types.ObjectId,
-        ref: "PostItem",
-      },
-    ],
+    postItems: {
+      type: [Schema.Types.ObjectId],
+      ref: "PostItem",
+      default: [],
+    },
     isPublic: { type: Boolean, default: false },
   },
   { timestamps: true }

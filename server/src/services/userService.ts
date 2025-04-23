@@ -1,14 +1,19 @@
 import mongoose from "mongoose";
-import User from "../models/User";
+import { Types } from "mongoose";
+import { User, IUser } from "../models/User";
 
-const getUsers = async () => {
-  const users = await User.find();
-  return users;
+const getUsers = () => {
+  return User.find();
 };
 
 //assumes id passed in can be cast to ObjectId
 // returns null if no User matching Id is found
-const getUserById = async (id: string) => {
-  const user = await User.findById(id);
-  return user;
+const getUserById = async (id: Types.ObjectId) => {
+  return User.findById(id).orFail();
 };
+
+const getUserByUsername = async (username: string) => {
+  return User.findOne({ username: username }).orFail();
+};
+
+export { getUserById, getUserByUsername, getUsers };

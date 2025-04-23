@@ -1,5 +1,4 @@
 import { connectMongoose, teardownMongoClient } from "./utils";
-import mongoose from "mongoose";
 import { PostItem, IPostItem } from "../src/models/PostItem";
 import { Post, IPost } from "../src/models/Post";
 import { User, IUser } from "../src/models/User";

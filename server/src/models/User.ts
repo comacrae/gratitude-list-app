@@ -19,26 +19,35 @@ interface IUser {
 
 const userSchema = new Schema<IUser>(
   {
-    username: { type: String, required: true },
-    email: { type: String, required: true },
-    following: [
-      {
-        type: Schema.Types.ObjectId,
-        ref: "User",
-      },
-    ],
-    followers: [
-      {
-        type: Schema.Types.ObjectId,
-        ref: "User",
-      },
-    ],
-    posts: [
-      {
-        type: Schema.Types.ObjectId,
-        ref: "Post",
-      },
-    ],
+    username: {
+      type: String,
+      required: true,
+      minLength: 1,
+      immutable: true,
+      unique: true,
+    },
+    email: {
+      type: String,
+      required: true,
+      minLength: 1,
+      immutable: true,
+      unique: true,
+    },
+    following: {
+      type: [Schema.Types.ObjectId],
+      ref: "User",
+      default: [],
+    },
+    followers: {
+      type: [Schema.Types.ObjectId],
+      ref: "User",
+      default: [],
+    },
+    posts: {
+      type: [Schema.Types.ObjectId],
+      ref: "Post",
+      default: [],
+    },
   },
   { timestamps: true } // adds createdAt and updatedAt Date
 );
