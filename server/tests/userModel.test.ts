@@ -1,5 +1,5 @@
 import { connectMongoose, teardownMongoClient } from "./utils";
-import User from "../src/models/User";
+import { User } from "../src/models/User";
 
 beforeAll(() => {
   return connectMongoose();

@@ -13,4 +13,4 @@ const postItemSchema = new Schema({
 });
 const PostItem = model<IPostItem>("PostItem", postItemSchema);
 
-export default PostItem;
+export { PostItem, IPostItem };

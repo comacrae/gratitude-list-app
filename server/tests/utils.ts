@@ -14,7 +14,7 @@ const teardownMongoClient = () => {
 
 const connectMongoose = async () => {
   const uri: string = getTestDeps(`tests/tests_deps.json`).MONGO_URI;
-  await getMongoClient(uri);
+  getMongoClient(uri).then((client) => {});
 };
 
 export { getTestDeps, teardownMongoClient, connectMongoose };

@@ -1,20 +1,30 @@
 import { Schema, model, Types } from "mongoose";
 
+/*
+Represents a gratitude list; contains post-items
+this will allow for items to be back-referenced in the future w/o drilling down
+*/
+
 interface IPost {
   author: Types.ObjectId;
-  items: Types.ObjectId[];
-  public: Boolean;
+  postItems: Types.ObjectId[]; //object id of post-items
+  isPublic: Boolean; // public or private
 }
 
 const postSchema = new Schema(
   {
     author: { type: Schema.Types.ObjectId, ref: "User", required: true },
-    items: { type: [Schema.Types.ObjectId], ref: "PostItem", required: true },
-    public: { type: Boolean, default: false },
+    postItems: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: "PostItem",
+      },
+    ],
+    isPublic: { type: Boolean, default: false },
   },
   { timestamps: true }
 );
 
 const Post = model<IPost>("Post", postSchema);
 
-export default Post;
+export { Post, IPost };

@@ -21,25 +21,28 @@ const userSchema = new Schema<IUser>(
   {
     username: { type: String, required: true },
     email: { type: String, required: true },
-    following: {
-      type: [Schema.Types.ObjectId],
-      default: [],
-      ref: "User",
-    },
-    followers: {
-      type: [Schema.Types.ObjectId],
-      default: [],
-      ref: "User",
-    },
-    posts: {
-      type: [Schema.Types.ObjectId],
-      default: [],
-      ref: "Post",
-    },
+    following: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: "User",
+      },
+    ],
+    followers: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: "User",
+      },
+    ],
+    posts: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: "Post",
+      },
+    ],
   },
   { timestamps: true } // adds createdAt and updatedAt Date
 );
 
 const User = model<IUser>("User", userSchema);
 
-export default User;
+export { User, IUser };
